@@ -131,6 +131,27 @@
   .sheet-figure{border-bottom:1px solid var(--line)}
   .sheet-figure img{display:block;width:100%;height:auto}
 
+  /* ---- image slideshow (one per sheet; auto-hides when empty) ---- */
+  .slideshow{position:relative;border-bottom:1px solid var(--line);background:var(--paper);overflow:hidden}
+  .slideshow .slides{position:relative;width:100%;aspect-ratio:16/10}
+  .slide{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .4s ease;background:var(--paper)}
+  .slide.is-active{opacity:1}
+  .ss-nav{
+    position:absolute;top:50%;transform:translateY(-50%);z-index:2;
+    width:38px;height:38px;border:1px solid var(--line);background:rgba(248,249,250,.92);
+    color:var(--ink);font-size:1.2rem;line-height:1;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:border-color .15s ease;
+  }
+  .ss-nav:hover{border-color:var(--hot)}
+  .ss-nav:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+  .ss-prev{left:12px}
+  .ss-next{right:12px}
+  .ss-dots{position:absolute;bottom:12px;left:0;right:0;display:flex;gap:7px;justify-content:center;z-index:2}
+  .ss-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(21,23,28,.25);cursor:pointer;padding:0}
+  .ss-dot:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+  .ss-dot.is-active{background:var(--hot)}
+  @media(prefers-reduced-motion:reduce){.slide{transition:none}}
+
   /* ---- CONTACT ---- */
   .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
   .links a{
@@ -141,6 +162,19 @@
   .links a:hover{border-color:var(--hot);transform:translateY(-1px)}
   .links a:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
   .links a .arrow{color:var(--hot);margin-left:8px}
+
+  .contact-line{font-family:"IBM Plex Mono",monospace;font-size:.95rem;color:var(--ink);margin-top:14px}
+  .contact-line a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+  .contact-line a:hover{border-color:var(--hot)}
+  .contact-line .sep{color:var(--ink-2);margin:0 10px}
+
+  .doc-link{
+    font-family:"IBM Plex Mono",monospace;font-size:.8rem;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);border-radius:3px;padding:4px 10px;margin:0 6px 4px 0;display:inline-block;
+    transition:border-color .15s ease;
+  }
+  .doc-link:hover{border-color:var(--hot)}
+  .doc-link .arrow{color:var(--hot);margin-left:6px}
 
   footer{padding:40px 0 60px}
   footer .fea-rule{margin-bottom:18px}
@@ -177,17 +211,17 @@
   <section id="about">
     <div class="sec-head"><span class="num">00</span><h2>Profile</h2></div>
     <p class="lead">
-    I'm a mechanical engineer with professional experience turning wrenches. I pair
-    <strong>SolidWorks design and FEA validation</strong> with real shop time as an automotive
-    technician — so I design parts already knowing how they get built, how they get installed,
-    and how they fail in the field. I'm targeting the performance and aftermarket drivetrain
-    space, where both sides of that engineer-and-mechanic combination are put to use.
+      I'm a mechanical engineer who still turns his own wrenches. I pair
+      <strong>SolidWorks design and FEA validation</strong> with real shop time as an automotive
+      technician — so I design parts already knowing how they get built, how they get installed,
+      and how they fail in the field. I'm targeting the performance and aftermarket drivetrain
+      space, where that engineer-and-mechanic combination is a real edge, not just a line on a résumé.
     </p>
   </section>
 
   <!-- ===================== PROJECTS ===================== -->
   <section id="work">
-    <div class="sec-head"><span class="num">01</span><h2>Selected Work</h2></div>
+    <div class="sec-head"><span class="num">01</span><h2>Projects</h2></div>
 
     <!-- ---------- PROJECT: CAPSTONE ---------- -->
     <article class="sheet">
@@ -195,84 +229,147 @@
         <h3>Variable-Width Pneumatically Actuated Wheel</h3>
         <span class="sheet-ref mono"><span class="v">SHEET 01</span></span>
       </div>
-      <!-- Add your best FEA result image here for instant impact:
-      <div class="sheet-figure"><img src="img/wheel-vonmises.png" alt="Von Mises stress plot, 7075-T6 wheel"></div>
-      -->
+      <div class="slideshow" data-autoplay="0">
+        <div class="slides">
+          <img class="slide" src="img/wheel-displacement.png" alt="FEA displacement (URES) plot, 7075-T6 wheel — max 4.74e-3 mm">
+          <!-- Add more pictures the same way:
+          <img class="slide" src="img/wheel-vonmises.png" alt="FEA von Mises stress plot">
+          <img class="slide" src="img/wheel-render.png" alt="CAD render of the variable-width wheel">
+          -->
+        </div>
+        <button class="ss-nav ss-prev" aria-label="Previous image">&#8249;</button>
+        <button class="ss-nav ss-next" aria-label="Next image">&#8250;</button>
+        <div class="ss-dots"></div>
+      </div>
       <div class="specs">
         <div class="row"><div class="label">Problem</div><div class="data">Design a wheel whose track width adjusts under pneumatic actuation, then validate it survives real wheel-load cases.</div></div>
         <div class="row"><div class="label">Role</div><div class="data">Lead on CAD, FEA, and the locking mechanism design.</div></div>
         <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">SW Simulation</span><span class="tag">FEA</span><span class="tag">7075-T6 Al</span></div></div>
         <div class="row"><div class="label">Analysis</div><div class="data">Static, frequency, and cyclic-fatigue (S-N) studies. Load cases included bead-seat forces, centrifugal body loads, and cornering. Designed to SAE J328 / J2530 / J267.</div></div>
         <div class="row"><div class="label">Result</div><div class="data">Peak von Mises <span class="num-out">[XXX MPa]</span> · min factor of safety <span class="num-out">[X.X]</span> · max displacement <span class="num-out">[X.XX mm]</span>. <em>(replace with your real numbers)</em></div></div>
+        <div class="row"><div class="label">Documents</div><div class="data"><a class="doc-link" href="capstone-report.pdf" target="_blank" rel="noopener">Full Report<span class="arrow">↓</span></a><a class="doc-link" href="capstone-presentation.pdf" target="_blank" rel="noopener">Presentation<span class="arrow">↓</span></a></div></div>
       </div>
     </article>
 
-    <!-- ---------- PROJECT: PERFORMANCE BUILD ---------- -->
+    <!-- ---------- PROJECT: PUMPKIN TREBUCHET ---------- -->
     <article class="sheet">
       <div class="sheet-top">
-        <h3>Performance Build — [Platform]</h3>
+        <h3>Pumpkin Trebuchet</h3>
         <span class="sheet-ref mono"><span class="v">SHEET 02</span></span>
       </div>
+      <div class="slideshow" data-autoplay="0">
+        <div class="slides">
+          <!-- Add one <img class="slide"> per picture; the slideshow turns on by itself.
+          <img class="slide" src="img/trebuchet-1.png" alt="Trebuchet during launch">
+          <img class="slide" src="img/trebuchet-2.png" alt="Trebuchet frame and throwing arm">
+          -->
+        </div>
+        <button class="ss-nav ss-prev" aria-label="Previous image">&#8249;</button>
+        <button class="ss-nav ss-next" aria-label="Next image">&#8250;</button>
+        <div class="ss-dots"></div>
+      </div>
       <div class="specs">
-        <div class="row"><div class="label">Problem</div><div class="data">[What were you building toward — power target, drivability, a specific failure you were solving?]</div></div>
-        <div class="row"><div class="label">Role</div><div class="data">Design, fabrication, diagnosis, and tuning — full hands-on.</div></div>
-        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">[Tuning SW]</span><span class="tag">Hand tools</span><span class="tag">[Fab]</span></div></div>
-        <div class="row"><div class="label">Outcome</div><div class="data">[Key result — power figure, what you learned, what you'd do differently. Link the build video below.]</div></div>
+        <div class="row"><div class="label">Problem</div><div class="data">Design and build a trebuchet to launch a pumpkin for maximum distance — KSU Pumpkin Launch competition.</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">Led structural and throwing-mechanism design and lead-presented the proposal and design reviews; managed team finances and material procurement.</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">Structural design</span><span class="tag">Fabrication</span></div></div>
+        <div class="row"><div class="label">Result</div><div class="data"><span class="num-out">1st place</span> · winning launch of <span class="num-out">390 ft</span>.</div></div>
       </div>
     </article>
 
-    <!-- ---------- PROJECT: 3D PRINTING ---------- -->
+    <!-- ---------- PROJECT: PING-PONG LAUNCHER ---------- -->
     <article class="sheet">
       <div class="sheet-top">
-        <h3>Functional 3D-Printed Parts &amp; Fixtures</h3>
+        <h3>High-Precision Ping-Pong Launcher</h3>
         <span class="sheet-ref mono"><span class="v">SHEET 03</span></span>
       </div>
+      <div class="slideshow" data-autoplay="0">
+        <div class="slides">
+          <!-- Add one <img class="slide"> per picture; the slideshow turns on by itself.
+          <img class="slide" src="img/launcher-1.png" alt="Ping-pong launcher assembly">
+          <img class="slide" src="img/launcher-2.png" alt="Machined launcher components">
+          -->
+        </div>
+        <button class="ss-nav ss-prev" aria-label="Previous image">&#8249;</button>
+        <button class="ss-nav ss-next" aria-label="Next image">&#8250;</button>
+        <div class="ss-dots"></div>
+      </div>
       <div class="specs">
-        <div class="row"><div class="label">Problem</div><div class="data">[A part or fixture you designed and printed — what it solved.]</div></div>
-        <div class="row"><div class="label">Role</div><div class="data">CAD design, print setup, iteration on tolerances and material.</div></div>
-        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">[Slicer]</span><span class="tag">FDM</span></div></div>
-        <div class="row"><div class="label">Outcome</div><div class="data">[What the final part did / how many revisions / fit result.]</div></div>
+        <div class="row"><div class="label">Problem</div><div class="data">Design a launcher to place ping-pong balls on target with high precision — Machine Design competition.</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">Performed calculations and analysis for the primary machine components; designed and manufactured several parts.</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">Hand calculations</span><span class="tag">Machining</span></div></div>
       </div>
     </article>
 
-    <!-- ---------- INTERNSHIP: ROVISYS ---------- -->
+    <!-- ============================================================
+         PROJECT SHEET TEMPLATE  —  to add a project: copy the <article>
+         below, paste it above this comment, bump the SHEET number, and
+         fill in the fields. Delete any row you don't need.
+
+         PRINCIPLE: each row should prove engineering skill through
+         SPECIFICS and NUMBERS, not adjectives. Field guidance:
+
+           Problem   the engineering challenge + the constraints that made
+                     it hard. Quantify: loads, tolerances, budget, weight,
+                     space, the target spec you had to hit.
+           Role      what YOU owned (critical on team projects). Lead with
+                     active verbs: designed, analyzed, sized, validated.
+           Approach  HOW you solved it — the method and the key design
+                     decisions and why. This is the row that shows you can
+                     engineer, e.g. "sized the shaft from a fatigue calc,
+                     then confirmed margins in FEA."
+           Tools     software, analysis methods, materials, standards.
+           Result    the quantified outcome that proves it worked: factor
+                     of safety, accuracy, distance, % improvement, pass/fail
+                     against the target. Wrap the number in num-out.
+           Documents optional links (report, drawing set, video). Delete
+                     the row if there's nothing to link.
+
+         OPTIONAL IMAGES: a CAD render or FEA plot does more than any text.
+         Paste this slideshow right after </div> of .sheet-top, and add one
+         <img class="slide"> per picture (it auto-hides if you add none):
+
+           <div class="slideshow" data-autoplay="0">
+             <div class="slides">
+               <img class="slide" src="img/your-image-1.png" alt="...">
+               <img class="slide" src="img/your-image-2.png" alt="...">
+             </div>
+             <button class="ss-nav ss-prev" aria-label="Previous image">&#8249;</button>
+             <button class="ss-nav ss-next" aria-label="Next image">&#8250;</button>
+             <div class="ss-dots"></div>
+           </div>
+
+         Copy from here:
+
     <article class="sheet">
       <div class="sheet-top">
-        <h3>Engineering Internship — RoviSys</h3>
-        <span class="sheet-ref mono"><span class="v">SHEET 04</span></span>
+        <h3>[Project name]</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 0X</span></span>
       </div>
       <div class="specs">
-        <div class="row"><div class="label">Period</div><div class="data">May – Aug 2023</div></div>
-        <div class="row"><div class="label">Scope</div><div class="data">[What you worked on — systems, deliverables, what you owned.]</div></div>
-        <div class="row"><div class="label">Outcome</div><div class="data">[One concrete thing you shipped or learned.]</div></div>
+        <div class="row"><div class="label">Problem</div><div class="data">[Challenge + key constraints, quantified: loads, tolerances, target spec.]</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">[What you owned — designed / analyzed / sized / validated / built.]</div></div>
+        <div class="row"><div class="label">Approach</div><div class="data">[The method and the key engineering decisions, and why you made them.]</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">[Tool]</span><span class="tag">[Method]</span><span class="tag">[Material]</span></div></div>
+        <div class="row"><div class="label">Result</div><div class="data">[Quantified outcome] <span class="num-out">[number]</span>.</div></div>
+        <div class="row"><div class="label">Documents</div><div class="data"><a class="doc-link" href="[file.pdf]" target="_blank" rel="noopener">[Label]<span class="arrow">&#8595;</span></a></div></div>
       </div>
     </article>
 
-    <!-- ---------- INTERNSHIP: CLEVELAND ELECTRIC ---------- -->
-    <article class="sheet">
-      <div class="sheet-top">
-        <h3>Engineering Internship — Cleveland Electric</h3>
-        <span class="sheet-ref mono"><span class="v">SHEET 05</span></span>
-      </div>
-      <div class="specs">
-        <div class="row"><div class="label">Period</div><div class="data">May – Jul 2025</div></div>
-        <div class="row"><div class="label">Scope</div><div class="data">[What you worked on — systems, deliverables, what you owned.]</div></div>
-        <div class="row"><div class="label">Outcome</div><div class="data">[One concrete thing you shipped or learned.]</div></div>
-      </div>
-    </article>
+         End copy.
+         ============================================================ -->
   </section>
 
   <!-- ===================== CONTACT ===================== -->
-<section id="contact" style="border-bottom:none">
-  <div class="sec-head"><span class="num">02</span><h2>Contact</h2></div>
-  <p class="lead">Open to entry-level mechanical / design engineering roles. The fastest way to reach me:</p>
-  <p class="contact-line"><a href="mailto:tjdoese@outlook.com">tjdoese@outlook.com</a><span class="sep">·</span><a href="tel:+17709400491">770-940-0491</a></p>
-  <div class="links">
-    <a href="https://www.linkedin.com/in/tylerdoese" target="_blank" rel="noopener">LinkedIn<span class="arrow">→</span></a>
-    <a href="https://www.youtube.com/@tylerdoese2451" target="_blank" rel="noopener">YouTube<span class="arrow">→</span></a>
-    <a href="resume.pdf" target="_blank" rel="noopener">Résumé<span class="arrow">→</span></a>
-  </div>
-</section>
+  <section id="contact" style="border-bottom:none">
+    <div class="sec-head"><span class="num">02</span><h2>Contact</h2></div>
+    <p class="lead">Open to entry-level mechanical / design engineering roles. The fastest way to reach me:</p>
+    <p class="contact-line"><a href="mailto:tjdoese@outlook.com">tjdoese@outlook.com</a><span class="sep">·</span><a href="tel:+17709400491">770-940-0491</a></p>
+    <div class="links">
+      <a href="https://www.linkedin.com/in/tylerdoese" target="_blank" rel="noopener">LinkedIn<span class="arrow">→</span></a>
+      <a href="https://www.youtube.com/@tylerdoese2451" target="_blank" rel="noopener">YouTube — Builds<span class="arrow">→</span></a>
+      <a href="resume.pdf" target="_blank" rel="noopener">Résumé (PDF)<span class="arrow">→</span></a>
+    </div>
+  </section>
 
   <footer>
     <div class="fea-rule" role="presentation"></div>
@@ -280,3 +377,57 @@
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var shows = document.querySelectorAll('.slideshow');
+    Array.prototype.forEach.call(shows, function (ss) {
+      var slides = Array.prototype.slice.call(ss.querySelectorAll('.slide'));
+      if (slides.length === 0) { ss.style.display = 'none'; return; }   // no images yet -> hide
+      var prev = ss.querySelector('.ss-prev'),
+          next = ss.querySelector('.ss-next'),
+          dotsWrap = ss.querySelector('.ss-dots');
+      var i = 0, timer = null;
+
+      function show(n) {
+        i = (n + slides.length) % slides.length;
+        slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); });
+        if (dotsWrap) Array.prototype.forEach.call(dotsWrap.children, function (d, k) {
+          d.classList.toggle('is-active', k === i);
+        });
+      }
+
+      if (slides.length < 2) {                                          // single image -> no controls
+        if (prev) prev.style.display = 'none';
+        if (next) next.style.display = 'none';
+        if (dotsWrap) dotsWrap.style.display = 'none';
+        show(0);
+        return;
+      }
+
+      if (dotsWrap) {
+        slides.forEach(function (_, k) {
+          var d = document.createElement('button');
+          d.className = 'ss-dot';
+          d.setAttribute('aria-label', 'Go to image ' + (k + 1));
+          d.addEventListener('click', function () { show(k); restart(); });
+          dotsWrap.appendChild(d);
+        });
+      }
+      if (prev) prev.addEventListener('click', function () { show(i - 1); restart(); });
+      if (next) next.addEventListener('click', function () { show(i + 1); restart(); });
+      show(0);
+
+      var delay = parseInt(ss.getAttribute('data-autoplay'), 10);
+      function start() { if (!reduce && delay > 0) timer = setInterval(function () { show(i + 1); }, delay); }
+      function stop() { if (timer) { clearInterval(timer); timer = null; } }
+      function restart() { stop(); start(); }
+      ss.addEventListener('mouseenter', stop);
+      ss.addEventListener('mouseleave', start);
+      ss.addEventListener('focusin', stop);
+      ss.addEventListener('focusout', start);
+      start();
+    });
+  })();
+</script>
