@@ -1,0 +1,282 @@
+<!-- =====================================================================
+     PORTFOLIO SITE — index.html
+     HOW TO FILL THIS IN:
+       1. Search for [BRACKETED] text — those are placeholders to replace.
+       2. The FEA numbers in Project 01 are placeholders — drop in your
+          real values (peak von Mises, factor of safety, displacement).
+       3. Replace links in the CONTACT section with your real URLs.
+       4. To add a project image, see the .sheet-figure note further down.
+     ===================================================================== -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tyler Doese — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#EEF0F2;        /* CAD viewport grey            */
+    --panel:#F8F9FA;        /* lifted card surface          */
+    --ink:#15171C;          /* graphite text                */
+    --ink-2:#5A616B;        /* secondary text               */
+    --line:#C9CDD3;         /* hairline rules               */
+    --line-2:#DDE0E4;       /* faint rules                  */
+    --hot:#C42B1C;          /* FEA "peak stress" accent     */
+    /* the von Mises thermal ramp — the one signature gradient */
+    --fea: linear-gradient(90deg,#2b3da8 0%,#1f8fb0 26%,#2fae5e 48%,#f2c20e 72%,#e8651f 88%,#c42b1c 100%);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding:0 24px;
+  }
+  .wrap{max-width:920px;margin:0 auto}
+
+  /* ---- monospace utility labels (the "data" voice) ---- */
+  .mono{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+
+  /* ---- top rule bar, like a sheet border header ---- */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line);
+  }
+  .topbar .mono{font-size:.68rem}
+
+  /* ---- HERO: drawing title block ---- */
+  .hero{padding:64px 0 0}
+  .hero .eyebrow{color:var(--hot)}
+  .hero h1{
+    font-family:"Archivo",sans-serif;font-weight:900;
+    font-size:clamp(2.8rem,9vw,5.4rem);
+    line-height:.94;letter-spacing:-.02em;margin:14px 0 6px;
+  }
+  .hero .role{
+    font-family:"Archivo",sans-serif;font-weight:500;
+    font-size:clamp(1.05rem,3vw,1.45rem);color:var(--ink-2);
+    letter-spacing:.01em;
+  }
+
+  /* the signature: thermal stress rule */
+  .fea-rule{height:6px;background:var(--fea);border-radius:2px;margin:30px 0 0}
+
+  /* title-block spec grid */
+  .block{
+    margin-top:28px;border:1px solid var(--line);
+    background:var(--panel);
+    display:grid;grid-template-columns:repeat(2,1fr);
+  }
+  .block .cell{
+    padding:14px 18px;border-right:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
+  }
+  .block .cell:nth-child(2n){border-right:none}
+  .block .cell .k{display:block;margin-bottom:4px}
+  .block .cell .v{font-family:"IBM Plex Mono",monospace;font-size:.92rem;font-weight:500;color:var(--ink)}
+  @media(max-width:560px){
+    .block{grid-template-columns:1fr}
+    .block .cell{border-right:none}
+  }
+
+  /* ---- section scaffolding ---- */
+  section{padding:64px 0;border-bottom:1px solid var(--line-2)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .sec-head .num{font-family:"IBM Plex Mono",monospace;color:var(--hot);font-size:.8rem;font-weight:600}
+  .sec-head h2{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.5rem;letter-spacing:-.01em}
+  .lead{font-size:1.05rem;max-width:62ch;color:var(--ink)}
+  .lead strong{font-weight:600}
+
+  /* ---- PROJECT DATASHEETS ---- */
+  .sheet{
+    border:1px solid var(--line);background:var(--panel);
+    margin-top:24px;
+  }
+  .sheet-top{
+    display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+    padding:18px 20px;border-bottom:1px solid var(--line);
+  }
+  .sheet-top h3{font-family:"Archivo",sans-serif;font-weight:700;font-size:1.18rem;letter-spacing:-.01em}
+  .sheet-ref{white-space:nowrap}
+  /* drawing-set sheet number, top-right, like a real title block */
+  .sheet-ref .v{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--ink);font-size:.85rem}
+
+  .specs{display:grid;grid-template-columns:120px 1fr}
+  .specs .row{display:contents}
+  .specs .label{
+    font-family:"IBM Plex Mono",monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--ink-2);padding:12px 20px;border-bottom:1px solid var(--line-2);border-right:1px solid var(--line-2);
+  }
+  .specs .data{padding:12px 20px;border-bottom:1px solid var(--line-2);font-size:.96rem}
+  .specs .row:last-child .label,.specs .row:last-child .data{border-bottom:none}
+  .specs .data .tag{
+    font-family:"IBM Plex Mono",monospace;font-size:.78rem;background:var(--paper);
+    border:1px solid var(--line);border-radius:3px;padding:2px 7px;margin:0 4px 4px 0;display:inline-block;
+  }
+  /* result numbers stand out in mono */
+  .num-out{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--hot)}
+  @media(max-width:560px){
+    .specs{grid-template-columns:1fr}
+    .specs .label{border-right:none;padding-bottom:2px}
+    .specs .data{padding-top:4px}
+  }
+
+  /* To add an image to a project: place this right after .sheet-top
+     <div class="sheet-figure"><img src="img/wheel-fea.png" alt="FEA von Mises plot"></div>
+     and uncomment the rule below. */
+  .sheet-figure{border-bottom:1px solid var(--line)}
+  .sheet-figure img{display:block;width:100%;height:auto}
+
+  /* ---- CONTACT ---- */
+  .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}
+  .links a{
+    font-family:"IBM Plex Mono",monospace;font-size:.85rem;text-decoration:none;color:var(--ink);
+    border:1px solid var(--line);background:var(--panel);padding:11px 16px;border-radius:4px;
+    transition:border-color .15s ease,transform .15s ease;
+  }
+  .links a:hover{border-color:var(--hot);transform:translateY(-1px)}
+  .links a:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+  .links a .arrow{color:var(--hot);margin-left:8px}
+
+  footer{padding:40px 0 60px}
+  footer .fea-rule{margin-bottom:18px}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .links a{transition:none}
+  }
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="mono">Mechanical Engineer · Design &amp; FEA</span>
+    <span class="mono">Woodstock, GA</span>
+  </div>
+
+  <!-- ===================== HERO / TITLE BLOCK ===================== -->
+  <header class="hero">
+    <span class="mono eyebrow">Portfolio — Rev. 2026</span>
+    <h1>Tyler Doese</h1>
+    <p class="role">Mechanical Engineer &amp; Working Technician</p>
+    <div class="fea-rule" role="presentation"></div>
+
+    <div class="block">
+      <div class="cell"><span class="k mono">Discipline</span><span class="v">Mechanical · Design &amp; FEA</span></div>
+      <div class="cell"><span class="k mono">Education</span><span class="v">B.S. ME — Kennesaw State, 2026</span></div>
+      <div class="cell"><span class="k mono">Focus</span><span class="v">Performance drivetrain &amp; aftermarket</span></div>
+      <div class="cell"><span class="k mono">Status</span><span class="v">Open to entry-level roles</span></div>
+    </div>
+  </header>
+
+  <!-- ===================== POSITIONING ===================== -->
+  <section id="about">
+    <div class="sec-head"><span class="num">00</span><h2>Profile</h2></div>
+    <p class="lead">
+      I'm a mechanical engineer who also works on cars with my own hands. I pair
+      <strong>SolidWorks design and FEA validation</strong> with real shop time as an automotive
+      technician — so I design parts knowing how they get built, installed, and how they fail in
+      the field. My target is the performance and aftermarket drivetrain space, where that
+      engineer-plus-mechanic combination actually matters.
+    </p>
+  </section>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section id="work">
+    <div class="sec-head"><span class="num">01</span><h2>Selected Work</h2></div>
+
+    <!-- ---------- PROJECT: CAPSTONE ---------- -->
+    <article class="sheet">
+      <div class="sheet-top">
+        <h3>Variable-Width Pneumatically Actuated Wheel</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 01</span></span>
+      </div>
+      <!-- Add your best FEA result image here for instant impact:
+      <div class="sheet-figure"><img src="img/wheel-vonmises.png" alt="Von Mises stress plot, 7075-T6 wheel"></div>
+      -->
+      <div class="specs">
+        <div class="row"><div class="label">Problem</div><div class="data">Design a wheel whose track width adjusts under pneumatic actuation, then validate it survives real wheel-load cases.</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">Lead on CAD, FEA, and the locking mechanism design.</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">SW Simulation</span><span class="tag">FEA</span><span class="tag">7075-T6 Al</span></div></div>
+        <div class="row"><div class="label">Analysis</div><div class="data">Static, frequency, and cyclic-fatigue (S-N) studies. Load cases included bead-seat forces, centrifugal body loads, and cornering. Designed to SAE J328 / J2530 / J267.</div></div>
+        <div class="row"><div class="label">Result</div><div class="data">Peak von Mises <span class="num-out">[XXX MPa]</span> · min factor of safety <span class="num-out">[X.X]</span> · max displacement <span class="num-out">[X.XX mm]</span>. <em>(replace with your real numbers)</em></div></div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT: PERFORMANCE BUILD ---------- -->
+    <article class="sheet">
+      <div class="sheet-top">
+        <h3>Performance Build — [Platform]</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 02</span></span>
+      </div>
+      <div class="specs">
+        <div class="row"><div class="label">Problem</div><div class="data">[What were you building toward — power target, drivability, a specific failure you were solving?]</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">Design, fabrication, diagnosis, and tuning — full hands-on.</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">[Tuning SW]</span><span class="tag">Hand tools</span><span class="tag">[Fab]</span></div></div>
+        <div class="row"><div class="label">Outcome</div><div class="data">[Key result — power figure, what you learned, what you'd do differently. Link the build video below.]</div></div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT: 3D PRINTING ---------- -->
+    <article class="sheet">
+      <div class="sheet-top">
+        <h3>Functional 3D-Printed Parts &amp; Fixtures</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 03</span></span>
+      </div>
+      <div class="specs">
+        <div class="row"><div class="label">Problem</div><div class="data">[A part or fixture you designed and printed — what it solved.]</div></div>
+        <div class="row"><div class="label">Role</div><div class="data">CAD design, print setup, iteration on tolerances and material.</div></div>
+        <div class="row"><div class="label">Tools</div><div class="data"><span class="tag">SolidWorks</span><span class="tag">[Slicer]</span><span class="tag">FDM</span></div></div>
+        <div class="row"><div class="label">Outcome</div><div class="data">[What the final part did / how many revisions / fit result.]</div></div>
+      </div>
+    </article>
+
+    <!-- ---------- INTERNSHIP: ROVISYS ---------- -->
+    <article class="sheet">
+      <div class="sheet-top">
+        <h3>Engineering Internship — RoviSys</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 04</span></span>
+      </div>
+      <div class="specs">
+        <div class="row"><div class="label">Period</div><div class="data">May – Aug 2023</div></div>
+        <div class="row"><div class="label">Scope</div><div class="data">[What you worked on — systems, deliverables, what you owned.]</div></div>
+        <div class="row"><div class="label">Outcome</div><div class="data">[One concrete thing you shipped or learned.]</div></div>
+      </div>
+    </article>
+
+    <!-- ---------- INTERNSHIP: CLEVELAND ELECTRIC ---------- -->
+    <article class="sheet">
+      <div class="sheet-top">
+        <h3>Engineering Internship — Cleveland Electric</h3>
+        <span class="sheet-ref mono"><span class="v">SHEET 05</span></span>
+      </div>
+      <div class="specs">
+        <div class="row"><div class="label">Period</div><div class="data">May – Jul 2025</div></div>
+        <div class="row"><div class="label">Scope</div><div class="data">[What you worked on — systems, deliverables, what you owned.]</div></div>
+        <div class="row"><div class="label">Outcome</div><div class="data">[One concrete thing you shipped or learned.]</div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" style="border-bottom:none">
+    <div class="sec-head"><span class="num">02</span><h2>Contact</h2></div>
+    <p class="lead">Open to entry-level mechanical / design engineering roles. The fastest way to reach me:</p>
+    <div class="links">
+      <a href="mailto:[your-email@example.com]">Email<span class="arrow">→</span></a>
+      <a href="https://www.linkedin.com/in/tylerdoese" target="_blank" rel="noopener">LinkedIn<span class="arrow">→</span></a>
+      <a href="https://www.youtube.com/@tylerdoese2451" target="_blank" rel="noopener">YouTube — Builds<span class="arrow">→</span></a>
+      <a href="resume.pdf" target="_blank" rel="noopener">Résumé (PDF)<span class="arrow">→</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fea-rule" role="presentation"></div>
+    <span class="mono">Tyler Doese · Mechanical Engineer · Woodstock, GA · 2026</span>
+  </footer>
+
+</div>
